@@ -1,0 +1,16 @@
+.idea
+# Migrations directories for App
+*/migrations
+# Pycache directories
+*/__pycache__
+# Pyc extension files
+*.
+*__init__.py
+
+# Log extension files
+*.log
+# Log Dir
+*/log
+
+# variables
+.env
