@@ -4,6 +4,22 @@ from django.db import transaction
 
 
 def save_product_info(product: dict):
+    """
+    Save product info in db
+
+    Args:
+        product: dict, product information
+    Return:
+        product_saved: object, product instance
+
+    product{
+        "id": int,
+        "is_active": bool,
+        "name": str,
+        "price": float,
+        "stock": int
+    }
+    """
     
     product_saved = ''
     # Create
@@ -18,6 +34,18 @@ def save_product_info(product: dict):
 
 
 def get_product_by_id(product: dict):
+    """
+    Get product by product id
+
+    Args:
+        product: dict, product information
+    Return:
+        response: dict, product information
+
+    product{
+        "id": int
+    }
+    """
 
     response = models.Product.objects.values('name', 'price', 'stock', 'is_active').get(id=product['id'])
 
@@ -25,6 +53,14 @@ def get_product_by_id(product: dict):
 
 
 def get_product_list():
+    """
+    Get the product list
+
+    Args:
+        None
+    Return:
+        response: list, product information
+    """
 
     response = models.Product.objects.values('name', 'price', 'stock', 'is_active').all()
 
@@ -32,6 +68,19 @@ def get_product_list():
 
 
 def update_product_stock(product: dict):
+    """
+    Update product stock in db
+
+    Args:
+        product: dict, product information
+    Return:
+        None
+
+    product{
+        "id": int,
+        "stock": int
+    }
+    """
 
     prod = models.Product.objects.get(id=product['id'])
     if not prod.is_active:
@@ -44,7 +93,20 @@ def update_product_stock(product: dict):
     return response
 
 
-def validate_duplicate_product(products: dict):
+def validate_duplicate_product(products: list):
+    """
+    Validate duplicate products in the Order
+    
+    Args:
+        products: list, products in the Order
+    Return:
+        None
+
+    products[{
+        "product_id": int
+    }]
+    """
+    
     checked_data = set()
 
     for product in products:
@@ -55,6 +117,19 @@ def validate_duplicate_product(products: dict):
 
 
 def product_validations(product_instance: object, product_info: dict):
+    """
+    Product validations before save Order
+    
+    Args:
+        product_instance: object, product instance
+        product_info: dict, product information
+    Return:
+        None
+
+    product_info{
+        "quantity": int
+    }
+    """
     
     # Quantity
     if not product_info['quantity'] > 0:
@@ -68,6 +143,21 @@ def product_validations(product_instance: object, product_info: dict):
 
 
 def calculate_new_stock(product_info: dict, stock: int):
+    """
+    Calculate the stock after a operation
+    
+    Args:
+        product_info: dict, product information
+        stock: int, product stock
+    Return:
+        None
+
+    product_info{
+        "product_id": int,
+        "quantity": int
+    }
+    """
+
     # Update Product Stock
     new_stock = {
         'id': product_info['product_id'],
@@ -77,6 +167,20 @@ def calculate_new_stock(product_info: dict, stock: int):
 
 
 def return_product_to_stock(order: object, product: dict):
+    """
+    Return product in the Order to Stock
+    
+    Args:
+        order: object, Order instance
+        product: dict, product information
+    Return:
+        None
+
+    product{
+        "product_id": int,
+        "quantity": int
+    }
+    """
 
     product_stock = models.Product.objects.values('stock').get(id=product['product_id'])
     product_in_order = models.OrderDetail.objects.values('quantity').get(order=order, product__id=product['product_id'])
@@ -89,6 +193,27 @@ def return_product_to_stock(order: object, product: dict):
 
 
 def save_order(order: dict):
+    """
+    Save order with it's products
+    
+    Args:
+        order: dict, order information
+    Return:
+        order_saved: object, order instance
+
+    order{
+        "order": {
+            "id": int,
+            "order_status": str,
+            "is_active": bool,
+            "date_time": datetime
+        },
+        "products": [{
+            "product_id": int,
+			"quantity": int
+        }]
+    }
+    """
 
     order_saved = ''
 
@@ -135,6 +260,20 @@ def save_order(order: dict):
 
 
 def delete_order(order: dict):
+    """
+    Delete order (change status)
+    
+    Args:
+        order: dict, order information
+    Return:
+        None
+
+    order{
+        "order": {
+            "id": int
+        }
+    }
+    """
 
     if not order['order']['id']:
         raise Exception('Debe incluir el Id de la orden a eliminar.')
@@ -158,6 +297,15 @@ def delete_order(order: dict):
 
 
 def process_orderdetail_format(order_info: object, order_detail: object):
+    """
+    Process Order Detail info with user format
+    
+    Args:
+        order_info: object, order instance
+        order_detail: object, orderDetail instance
+    Return:
+        response: dict, order detail
+    """
 
     response = {
         'id': order_info.id,
@@ -183,6 +331,14 @@ def process_orderdetail_format(order_info: object, order_detail: object):
 
 
 def get_order_by_id(order: dict):
+    """
+    Get Order Detail by id
+    
+    Args:
+        order: dict, order information
+    Return:
+        response: dict, order detail
+    """
 
     order_info = models.Order.objects.get(id=order['id'])
     order_detail = models.OrderDetail.objects.filter(order=order_info)
@@ -193,6 +349,14 @@ def get_order_by_id(order: dict):
 
 
 def get_order_list():
+    """
+    Get List with Orders Detail
+    
+    Args:
+        None
+    Return:
+        response: dict, order detail
+    """
 
     response = list()
     orders_info = models.Order.objects.all()

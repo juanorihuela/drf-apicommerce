@@ -7,6 +7,7 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    
     is_active = models.BooleanField()
 
     name = models.CharField(max_length=250)
@@ -22,9 +23,10 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField()
     
+    is_active = models.BooleanField()
     order_status = models.CharField(max_length=50)
+
     date_time= models.DateTimeField()
 
     def get_total(self):
