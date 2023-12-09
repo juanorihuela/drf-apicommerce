@@ -88,12 +88,12 @@ WSGI_APPLICATION = 'ecommerceApi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('ENGINE'),
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('HOST'),
-        'PORT': '',
+        'ENGINE': os.getenv('ENGINE_DATABASES'),
+        'NAME': os.getenv('NAME_DATABASES'),
+        'USER': os.getenv('USER_DATABASES'),
+        'PASSWORD': os.getenv('PASSWORD_DATABASES'),
+        'HOST': os.getenv('HOST_DATABASES'),
+        'PORT': os.getenv('PORT_DATABASES'),
     }
 }
 
