@@ -12,11 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 
 # environment variables
-load_dotenv(find_dotenv())
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG') in ['True']
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 
@@ -132,9 +132,9 @@ LANGUAGE_CODE = os.getenv('LANGUAGE_CODE')
 
 TIME_ZONE = os.getenv('TIME_ZONE')
 
-USE_I18N = os.getenv('USE_I18N')
+USE_I18N = os.getenv('USE_I18N') in ['True']
 
-USE_TZ = os.getenv('USE_TZ')
+USE_TZ = os.getenv('USE_TZ') in ['True']
 
 
 # Static files (CSS, JavaScript, Images)
